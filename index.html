@@ -23,7 +23,6 @@
         .option-btn.selected { background: var(--p); color: #fff !important; border-color: var(--p); }
         .option-btn.selected b { color: #fff !important; }
 
-        /* Sidebar ทดเลข */
         .scratch-panel { width: 0; background: #fff; transition: 0.3s; display: flex; flex-direction: column; border-left: 3px solid var(--p); }
         .scratch-panel.open { width: 450px; }
         canvas { flex: 1; background: #fdfdfd; cursor: crosshair; touch-action: none; }
@@ -31,11 +30,9 @@
         .btn { padding: 12px 24px; border: 2px solid var(--p); border-radius: 8px; font-weight: 600; cursor: pointer; background: #fff; transition: 0.2s; }
         .btn-p { background: var(--p); color: #fff !important; }
         
-        /* สรุปผล */
         .review-box { margin-top: 25px; padding: 20px; border-radius: 12px; background: #fff; border-left: 6px solid #ccc; margin-bottom: 15px; }
         .correct-style { border-left-color: #28a745; background: #f0fff4; }
         .wrong-style { border-left-color: #dc3545; background: #fff5f5; }
-        .exp-text { margin-top: 10px; font-size: 0.95rem; color: #444; border-top: 1px solid #eee; padding-top: 8px; }
     </style>
 </head>
 <body>
@@ -82,223 +79,31 @@
 <script>
     let isThai = false, current = 0;
     const quizData = [
-        { 
-            en: "1. Determine the lowest value of the stem-leaf?", 
-            th: "1. ค่าที่ต่ำที่สุดในแผนภาพต้น-ใบคือข้อใด?", 
-            img: "1-3.jpg", 
-            opt: ["45", "16", "42", "119"], 
-            optTh: ["45", "16", "42", "119"],
-            ans: 1, 
-            exp: "สังเกตจากต้น (Stem) ที่น้อยที่สุดคือ 1 และใบ (Leaf) ที่น้อยที่สุดในแถวนั้นคือ 6 จึงรวมเป็น 16" 
-        },
-        { 
-            en: "2. Determine the highest value of the stem-leaf?", 
-            th: "2. ค่าที่สูงที่สุดในแผนภาพต้น-ใบคือข้อใด?", 
-            img: "1-3.jpg", 
-            opt: ["45", "18", "16", "42"], 
-            optTh: ["45", "18", "16", "42"],
-            ans: 0, 
-            exp: "สังเกตจากต้นที่มากที่สุดคือ 4 และใบสุดท้ายในแถวนั้นคือ 5 จึงรวมเป็น 45" 
-        },
-        { 
-            en: "3. What is the range of the stem-leaf?", 
-            th: "3. พิสัย (Range) ของแผนภาพต้น-ใบคือเท่าใด?", 
-            img: "1-3.jpg", 
-            opt: ["39", "36", "9", "29"], 
-            optTh: ["39", "36", "9", "29"],
-            ans: 3, 
-            exp: "พิสัย = ค่าสูงสุด (45) - ค่าน้อยสุด (16) = 29" 
-        },
-        { 
-            en: "4. What is the mean of the data (Dot Plot)?", 
-            th: "4. ค่าเฉลี่ย (Mean) ของข้อมูลในแผนภาพจุดคือเท่าใด?", 
-            img: "4-6.jpg", 
-            opt: ["1.5", "3", "2.7", "7.35"], 
-            optTh: ["1.5", "3", "2.7", "7.35"],
-            ans: 2, 
-            exp: "นำผลรวมของข้อมูลทั้งหมดหารด้วยจำนวนจุด จะได้ค่าเฉลี่ยประมาณ 2.7" 
-        },
-        { 
-            en: "5. Calculate the median of the data in the dot plot.", 
-            th: "5. มัธยฐาน (Median) ของข้อมูลในแผนภาพจุดคือเท่าใด?", 
-            img: "4-6.jpg", 
-            opt: ["2", "4.5", "3.5", "5"], 
-            optTh: ["2", "4.5", "3.5", "5"],
-            ans: 0, 
-            exp: "เมื่อเรียงลำดับข้อมูลจากจุดทั้งหมด ค่าที่อยู่ตำแหน่งตรงกลางคือ 2" 
-        },
-        { 
-            en: "6. What is the mode of the dot plot?", 
-            th: "6. ฐานนิยม (Mode) ของแผนภาพจุดคือข้อใด?", 
-            img: "4-6.jpg", 
-            opt: ["2", "1", "3", "4"], 
-            optTh: ["2", "1", "3", "4"],
-            ans: 0, 
-            exp: "ฐานนิยมคือค่าที่มีความถี่สูงสุด หรือมีจำนวนจุดซ้อนกันมากที่สุด ซึ่งก็คือเลข 2" 
-        },
-        { 
-            en: "7. What is the median for 24, 23, 22, 21, and 20?", 
-            th: "7. มัธยฐานของ 24, 23, 22, 21 และ 20 คือข้อใด?", 
-            opt: ["20.5", "22", "24.8", "21"], 
-            optTh: ["20.5", "22", "24.8", "21"],
-            ans: 1, 
-            exp: "เรียงข้อมูล: 20, 21, 22, 23, 24 ค่าที่อยู่ตรงกลางคือ 22" 
-        },
-        { 
-            en: "8. Thalia’s Math test marks are 45, 48, 42, 50, 49, 42. Average mean?", 
-            th: "8. คะแนนสอบของ Thalia คือ 45, 48, 42, 50, 49, 42 ค่าเฉลี่ยคือเท่าใด?", 
-            opt: ["86.3", "87", "95", "46"], 
-            optTh: ["86.3", "87", "95", "46"],
-            ans: 3, 
-            exp: "ผลรวมคะแนน 276 หารด้วยจำนวนวิชา 6 จะได้ค่าเฉลี่ยเท่ากับ 46" 
-        },
-        { 
-            en: "9. Which theorem or postulate can be used to prove the relationship?", 
-            th: "9. จากรูป ทฤษฎีบทหรือสัจพจน์ใดที่ใช้พิสูจน์ความสัมพันธ์ได้?", 
-            img: "9.jpg", 
-            opt: ["ASA", "AAS", "SSS", "SAS"], 
-            optTh: ["ASA", "AAS", "SSS", "SAS"],
-            ans: 3, 
-            exp: "รูปมีการระบุ ด้าน-มุม-ด้าน (Side-Angle-Side) ที่เท่ากันตามสัญลักษณ์" 
-        },
-        { 
-            en: "10. The pair of polygons is congruent by what condition?", 
-            th: "10. รูปหลายเหลี่ยมคู่นี้เท่ากันทุกประการด้วยเงื่อนไขใด?", 
-            img: "10.jpg", 
-            opt: ["HL", "SAS", "SSS", "ASA"], 
-            optTh: ["HL", "SAS", "SSS", "ASA"],
-            ans: 1, 
-            exp: "พิจารณาจากสัญลักษณ์ที่โจทย์กำหนดให้เป็นแบบ ด้าน-มุม-ด้าน (SAS)" 
-        },
-        { 
-            en: "11. What triangle relationship is shown in the pair of triangles?", 
-            th: "11. ความสัมพันธ์ของรูปสามเหลี่ยมคู่นี้คือข้อใด?", 
-            img: "11.jpg", 
-            opt: ["ASA", "SSS", "SAS", "HL"], 
-            optTh: ["ASA", "SSS", "SAS", "HL"],
-            ans: 1, 
-            exp: "มีการทำเครื่องหมายว่าด้านทั้ง 3 ด้านเท่ากัน จึงเป็นแบบ ด้าน-ด้าน-ด้าน (SSS)" 
-        },
-        { 
-            en: "12. The pair of triangles below is congruent by?", 
-            th: "12. รูปสามเหลี่ยมคู่นี้เท่ากันทุกประการด้วยเงื่อนไขใด?", 
-            img: "12.jpg", 
-            opt: ["SSS", "HL", "ASA", "SAS"], 
-            optTh: ["SSS", "HL", "ASA", "SAS"],
-            ans: 2, 
-            exp: "มีการระบุ มุม-ด้าน-มุม (Angle-Side-Angle) ที่เท่ากัน" 
-        },
-        { 
-            en: "13. Find the value of x using the given figure.", 
-            th: "13. จงหาค่า x จากรูปที่กำหนดให้", 
-            img: "13.jpg", 
-            opt: ["x = 125", "x = 130", "x = 150", "x = 60"], 
-            optTh: ["x = 125", "x = 130", "x = 150", "x = 60"],
-            ans: 0, 
-            exp: "มุมบนเส้นตรงรวมกันได้ 180 องศา ดังนั้น x = 180 - 55 = 125" 
-        },
-        { 
-            en: "14. Find the value of x.", 
-            th: "14. จงหาค่า x", 
-            img: "14.jpg", 
-            opt: ["109", "71", "29", "120"], 
-            optTh: ["109", "71", "29", "120"],
-            ans: 0, 
-            exp: "มุมตรงข้าม (Vertical Angles) มีขนาดเท่ากันเสมอ ดังนั้น x = 109" 
-        },
-        { 
-            en: "15. Which of the following are alternate interior angles?", 
-            th: "15. ข้อใดต่อไปนี้คือมุมแย้งภายใน?", 
-            img: "15.jpg", 
-            opt: ["5 and 8, 6 and 7", "5 and 7, 6 and 8", "5 and 6, 7 and 8", "8 and 5, 7 and 8"], 
-            optTh: ["5 และ 8, 6 และ 7", "5 และ 7, 6 และ 8", "5 และ 6, 7 และ 8", "8 และ 5, 7 และ 8"],
-            ans: 0, 
-            exp: "มุมแย้งภายในคือมุมที่อยู่เยื้องกันคนละฝั่งของเส้นตัด แต่อยู่ภายในเส้นคู่ขนาน" 
-        },
-        { 
-            en: "16. What geometric transformation is applied?", 
-            th: "16. การแปลงทางเรขาคณิตในรูปคือข้อใด?", 
-            img: "16.jpg", 
-            opt: ["Dilation", "Rotation", "Reflection", "Translation"], 
-            optTh: ["การย่อขยาย", "การหมุน", "การสะท้อน", "การเลื่อนขนาน"],
-            ans: 2, 
-            exp: "รูปถูกพลิกข้ามแกนสมมาตรเหมือนส่องกระจก จึงเป็นการสะท้อน (Reflection)" 
-        },
-        { 
-            en: "17. What geometric transformation is applied?", 
-            th: "17. การแปลงทางเรขาคณิตในรูปคือข้อใด?", 
-            img: "17.jpg", 
-            opt: ["Rotation", "Translation", "Dilation", "Reflection"], 
-            optTh: ["การหมุน", "การเลื่อนขนาน", "การย่อขยาย", "การสะท้อน"],
-            ans: 1, 
-            exp: "รูปถูกเลื่อนตำแหน่งไปโดยไม่เปลี่ยนทิศทางหรือขนาด จึงเป็นการเลื่อนขนาน (Translation)" 
-        },
-        { 
-            en: "18. What geometric transformation is applied?", 
-            th: "18. การแปลงทางเรขาคณิตในรูปคือข้อใด?", 
-            img: "18.jpg", 
-            opt: ["Rotation", "Dilation", "Translation", "Reflection"], 
-            optTh: ["การหมุน", "การย่อขยาย", "การเลื่อนขนาน", "การสะท้อน"],
-            ans: 0, 
-            exp: "รูปถูกเปลี่ยนทิศทางรอบจุดศูนย์กลาง จึงเป็นการหมุน (Rotation)" 
-        },
-        { 
-            en: "19. What is the rule of the given translation?", 
-            th: "19. กฎของการเลื่อนขนานในรูปนี้คือข้อใด?", 
-            img: "19.jpg", 
-            opt: ["1-unit right", "2 units up, 1 unit down", "1-unit right, 1 unit down", "2 units up"], 
-            optTh: ["ขวา 1 หน่วย", "ขึ้น 2 ลง 1", "ขวา 1 หน่วย ลง 1 หน่วย", "ขึ้น 2 หน่วย"],
-            ans: 2, 
-            exp: "พิจารณาจากจุดยอดเดิมไปยังจุดใหม่ พบว่าขยับไปทางขวา 1 ช่องและลง 1 ช่อง" 
-        },
-        { 
-            en: "20. Factor by GCF: 2x²y³ + 14xy² - 18x³y", 
-            th: "20. แยกตัวประกอบโดยใช้ ห.ร.ม. (GCF)", 
-            opt: ["2xy (xy³ + 7y - 3x²)", "xy (2xy + 14x - 18y)", "xy (2xy² + 7xy - 9x²)", "2xy (xy² + 7y - 9x²)"], 
-            optTh: ["2xy (xy³ + 7y - 3x²)", "xy (2xy + 14x - 18y)", "xy (2xy² + 7xy - 9x²)", "2xy (xy² + 7y - 9x²)"],
-            ans: 3, 
-            exp: "ดึงตัวร่วมมากที่สุดคือ 2xy ออกมา จะเหลือ (xy² + 7y - 9x²)" 
-        },
-        { 
-            en: "21. Factor the polynomial: m² + m – 90", 
-            th: "21. แยกตัวประกอบพหุนาม: m² + m – 90", 
-            opt: ["(m+10)(m+9)", "(m-10)(m-9)", "(m-10)(m+9)", "(m+10)(m-9)"], 
-            optTh: ["(m+10)(m+9)", "(m-10)(m-9)", "(m-10)(m+9)", "(m+10)(m-9)"],
-            ans: 3, 
-            exp: "หาตัวเลขสองตัวที่คูณกันได้ -90 และบวกกันได้ +1 คือ +10 และ -9" 
-        },
-        { 
-            en: "22. What are the factors of 5n² + 12n + 4?", 
-            th: "22. ตัวประกอบของ 5n² + 12n + 4 คือข้อใด?", 
-            opt: ["(5n+2)(n+2)", "(n+4)(5n+1)", "(n+1)(5n+4)", "(5n-1)(n-4)"], 
-            optTh: ["(5n+2)(n+2)", "(n+4)(5n+1)", "(n+1)(5n+4)", "(5n-1)(n-4)"],
-            ans: 0, 
-            exp: "ใช้วิธีแยกสองวงเล็บ: (5n * n) + (5n * 2) + (2 * n) + (2 * 2) = 5n² + 12n + 4" 
-        },
-        { 
-            en: "23. What are the factors of 2p³ + 5p² + 6p + 15 by grouping?", 
-            th: "23. แยกตัวประกอบแบบจับกลุ่มของ 2p³ + 5p² + 6p + 15", 
-            opt: ["(p²+5)(2p+3)", "(p²+3)(2p+5)", "(2p+1)(5p²+4)", "(5p²-1)(p-3)"], 
-            optTh: ["(p²+5)(2p+3)", "(p²+3)(2p+5)", "(2p+1)(5p²+4)", "(5p²-1)(p-3)"],
-            ans: 1, 
-            exp: "จับกลุ่ม: p²(2p+5) + 3(2p+5) ดึงตัวร่วม (2p+5) ออกมาจะได้ (p²+3)(2p+5)" 
-        },
-        { 
-            en: "24. Factor the perfect square trinomials: 9x² + 12xy + 4y²", 
-            th: "24. แยกตัวประกอบกำลังสองสมบูรณ์: 9x² + 12xy + 4y²", 
-            opt: ["(3x-2y)²", "(3x+2)²", "(3x+2y)²", "(3+2y)²"], 
-            optTh: ["(3x-2y)²", "(3x+2)²", "(3x+2y)²", "(3+2y)²"],
-            ans: 2, 
-            exp: "ใช้สูตร (หน้า + หลัง)² = หน้า² + 2หน้าหลัง + หลัง² โดยหน้าคือ 3x และหลังคือ 2y" 
-        },
-        { 
-            en: "25. Find the factors of the difference of 2 squares: 25a² – 121b²", 
-            th: "25. แยกตัวประกอบผลต่างกำลังสอง: 25a² – 121b²", 
-            opt: ["(5a-11b)²", "(5a-11b)(5a-11b)", "(5a-11)(5a-11)", "(5a+11b)(5a-11b)"], 
-            optTh: ["(5a-11b)²", "(5a-11b)(5a-11b)", "(5a-11)(5a-11)", "(5a+11b)(5a-11b)"],
-            ans: 3, 
-            exp: "ใช้สูตร หน้า² - หลัง² = (หน้า - หลัง)(หน้า + หลัง) โดยหน้าคือ 5a และหลังคือ 11b" 
-        }
+        { en: "1. Determine the lowest value of the stem-leaf?", th: "1. ค่าที่ต่ำที่สุดในแผนภาพต้น-ใบคือข้อใด?", img: "1-3.jpg", opt: ["45", "16", "42", "119"], optTh: ["45", "16", "42", "119"], ans: 1 },
+        { en: "2. Determine the highest value of the stem-leaf?", th: "2. ค่าที่สูงที่สุดในแผนภาพต้น-ใบคือข้อใด?", img: "1-3.jpg", opt: ["45", "18", "16", "42"], optTh: ["45", "18", "16", "42"], ans: 0 },
+        { en: "3. What is the range of the stem-leaf?", th: "3. พิสัย (Range) ของแผนภาพต้น-ใบคือเท่าใด?", img: "1-3.jpg", opt: ["39", "36", "9", "29"], optTh: ["39", "36", "9", "29"], ans: 3 },
+        { en: "4. What is the mean of the data (Dot Plot)?", th: "4. ค่าเฉลี่ย (Mean) ของข้อมูลในแผนภาพจุดคือเท่าใด?", img: "4-6.jpg", opt: ["1.5", "3", "2.7", "7.35"], optTh: ["1.5", "3", "2.7", "7.35"], ans: 2 },
+        { en: "5. Calculate the median of the data in the dot plot.", th: "5. มัธยฐาน (Median) ของข้อมูลในแผนภาพจุดคือเท่าใด?", img: "4-6.jpg", opt: ["2", "4.5", "3.5", "5"], optTh: ["2", "4.5", "3.5", "5"], ans: 0 },
+        { en: "6. What is the mode of the dot plot?", th: "6. ฐานนิยม (Mode) ของแผนภาพจุดคือข้อใด?", img: "4-6.jpg", opt: ["2", "1", "3", "4"], optTh: ["2", "1", "3", "4"], ans: 1 },
+        { en: "7. What is the median for 24, 23, 22, 21, and 20?", th: "7. มัธยฐานของ 24, 23, 22, 21 และ 20 คือข้อใด?", opt: ["20.5", "22", "24.8", "21"], optTh: ["20.5", "22", "24.8", "21"], ans: 1 },
+        { en: "8. Thalia’s Math test marks are 45, 48, 42, 50, 49, 42. Average mean?", th: "8. คะแนนสอบของ Thalia คือ 45, 48, 42, 50, 49, 42 ค่าเฉลี่ยคือเท่าใด?", opt: ["86.3", "87", "95", "46"], optTh: ["86.3", "87", "95", "46"], ans: 3 },
+        { en: "9. Which theorem or postulate can be used to prove the relationship?", th: "9. จากรูป ทฤษฎีบทหรือสัจพจน์ใดที่ใช้พิสูจน์ความสัมพันธ์ได้?", img: "9.jpg", opt: ["ASA", "AAS", "SSS", "SAS"], optTh: ["ASA", "AAS", "SSS", "SAS"], ans: 3 },
+        { en: "10. The pair of polygons is congruent by what condition?", th: "10. รูปหลายเหลี่ยมคู่นี้เท่ากันทุกประการด้วยเงื่อนไขใด?", img: "10.jpg", opt: ["HL", "SAS", "SSS", "ASA"], optTh: ["HL", "SAS", "SSS", "ASA"], ans: 2 },
+        { en: "11. What triangle relationship is shown in the pair of triangles?", th: "11. ความสัมพันธ์ของรูปสามเหลี่ยมคู่นี้คือข้อใด?", img: "11.jpg", opt: ["ASA", "SSS", "SAS", "HL"], optTh: ["ASA", "SSS", "SAS", "HL"], ans: 0 },
+        { en: "12. The pair of triangles below is congruent by?", th: "12. รูปสามเหลี่ยมคู่นี้เท่ากันทุกประการด้วยเงื่อนไขใด?", img: "12.jpg", opt: ["SSS", "HL", "ASA", "SAS"], optTh: ["SSS", "HL", "ASA", "SAS"], ans: 1 },
+        { en: "13. Find the value of x using the given figure.", th: "13. จงหาค่า x จากรูปที่กำหนดให้", img: "13.jpg", opt: ["x = 125", "x = 130", "x = 150", "x = 60"], optTh: ["x = 125", "x = 130", "x = 150", "x = 60"], ans: 0 },
+        { en: "14. Find the value of x.", th: "14. จงหาค่า x", img: "14.jpg", opt: ["109", "71", "29", "120"], optTh: ["109", "71", "29", "120"], ans: 0 },
+        { en: "15. Which of the following are alternate interior angles?", th: "15. ข้อใดต่อไปนี้คือมุมแย้งภายใน?", img: "15.jpg", opt: ["5 and 8, 6 and 7", "5 and 7, 6 and 8", "5 and 6, 7 and 8", "8 and 5, 7 and 8"], optTh: ["5 และ 8, 6 และ 7", "5 และ 7, 6 และ 8", "5 และ 6, 7 และ 8", "8 และ 5, 7 และ 8"], ans: 0 },
+        { en: "16. What geometric transformation is applied?", th: "16. การแปลงทางเรขาคณิตในรูปคือข้อใด?", img: "16.jpg", opt: ["Dilation", "Rotation", "Reflection", "Translation"], optTh: ["การย่อขยาย", "การหมุน", "การสะท้อน", "การเลื่อนขนาน"], ans: 1 },
+        { en: "17. What geometric transformation is applied?", th: "17. การแปลงทางเรขาคณิตในรูปคือข้อใด?", img: "17.jpg", opt: ["Rotation", "Translation", "Dilation", "Reflection"], optTh: ["การหมุน", "การเลื่อนขนาน", "การย่อขยาย", "การสะท้อน"], ans: 1 },
+        { en: "18. What geometric transformation is applied?", th: "18. การแปลงทางเรขาคณิตในรูปคือข้อใด?", img: "18.jpg", opt: ["Rotation", "Dilation", "Translation", "Reflection"], optTh: ["การหมุน", "การย่อขยาย", "การเลื่อนขนาน", "การสะท้อน"], ans: 3 },
+        { en: "19. What is the rule of the given translation?", th: "19. กฎของการเลื่อนขนานในรูปนี้คือข้อใด?", img: "19.jpg", opt: ["1-unit right", "2 units up, 1 unit down", "1-unit right, 1 unit down", "2 units up"], optTh: ["ขวา 1 หน่วย", "ขึ้น 2 ลง 1", "ขวา 1 หน่วย ลง 1 หน่วย", "ขึ้น 2 หน่วย"], ans: 0 },
+        { en: "20. Factor by GCF: 2x2y3+14xy2-18x3y", th: "20. แยกตัวประกอบโดยใช้ ห.ร.ม. (GCF)", opt: ["A", "B", "C", "2xy(xy2+7y-9x2)"], optTh: ["A", "B", "C", "2xy(xy2+7y-9x2)"], ans: 3 },
+        { en: "21. Factor the polynomial: m2+m-90", th: "21. แยกตัวประกอบพหุนาม: m² + m – 90", opt: ["A", "B", "C", "(m+10)(m-9)"], optTh: ["A", "B", "C", "(m+10)(m-9)"], ans: 3 },
+        { en: "22. What are the factors of 5n2+12n+20?", th: "22. ตัวประกอบของ 5n2+12n+20 คือข้อใด?", opt: ["(5n+2)(n+2)", "B", "C", "D"], optTh: ["(5n+2)(n+2)", "B", "C", "D"], ans: 0 },
+        { en: "23. What are the factors of 2p3+5p2+6p+15 by grouping?", th: "23. แยกตัวประกอบแบบจับกลุ่ม", opt: ["A", "(p2+3)(2p+5)", "C", "D"], optTh: ["A", "(p2+3)(2p+5)", "C", "D"], ans: 1 },
+        { en: "24. Factor the perfect square trinomials: 9x2+12xy+4y2", th: "24. แยกตัวประกอบกำลังสองสมบูรณ์", opt: ["A", "B", "(3x+2y)2", "D"], optTh: ["A", "B", "(3x+2y)2", "D"], ans: 2 },
+        { en: "25. Find the factors of the difference of 2 squares: 25a2-121b2", th: "25. แยกตัวประกอบผลต่างกำลังสอง", opt: ["A", "B", "C", "(5a+11b)(5a-11b)"], optTh: ["A", "B", "C", "(5a+11b)(5a-11b)"], ans: 3 }
     ];
 
     let userChoices = new Array(25).fill(null);
@@ -310,10 +115,8 @@
         const item = quizData[current];
         document.getElementById("q-progress").innerText = isThai ? `ข้อที่ ${current + 1} / 25` : `Question ${current + 1} / 25`;
         document.getElementById("q-text").innerText = isThai ? item.th : item.en;
-        
         const img = document.getElementById("q-image");
         if(item.img) { img.src = item.img; img.style.display = "block"; } else { img.style.display = "none"; }
-        
         const container = document.getElementById("options-container");
         container.innerHTML = "";
         const options = isThai ? item.optTh : item.opt;
@@ -337,7 +140,6 @@
         document.getElementById("result-ui").style.display = "block";
         const score = userChoices.filter((a, i) => a === quizData[i].ans).length;
         document.getElementById("final-score").innerText = isThai ? `คะแนน: ${score} / 25` : `Score: ${score} / 25`;
-        
         const list = document.getElementById("review-list");
         list.innerHTML = "";
         quizData.forEach((item, i) => {
@@ -346,16 +148,14 @@
             div.className = `review-box ${isCorrect ? 'correct-style' : 'wrong-style'}`;
             const options = isThai ? item.optTh : item.opt;
             div.innerHTML = `
-                <b>ข้อที่ ${i+1}:</b> ${isCorrect ? '✅ ถูกต้อง (Correct)' : '❌ ผิด (Wrong)'}<br>
-                คำตอบของคุณ: ${userChoices[i] !== null ? options[userChoices[i]] : 'ไม่ตอบ'}<br>
-                <span style="color:#28a745">คำตอบที่ถูก: ${options[item.ans]}</span>
-                <div class="exp-text">💡 <b>คำอธิบาย:</b> ${item.exp}</div>
+                <b>ข้อที่ ${i+1}:</b> ${isCorrect ? '✅ ถูกต้อง' : '❌ ผิด'}<br>
+                คำตอบที่เลือก: ${userChoices[i] !== null ? options[userChoices[i]] : 'ไม่ตอบ'}<br>
+                <span style="color:#28a745">เฉลย: ${options[item.ans]}</span>
             `;
             list.appendChild(div);
         });
     }
 
-    // Canvas Setup
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let drawing = false, tool = 'pen';
@@ -370,7 +170,6 @@
         ctx.strokeStyle = tool === 'pen' ? '#007bff' : '#ffffff';
         ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke();
     };
-
     render();
 </script>
 </body>
