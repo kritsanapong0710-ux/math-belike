@@ -3,33 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MA 22102 FINAL EXAM - TRANSLATION VERSION</title>
+    <title>MA 22102 FINAL EXAM - FULL OPTIONS</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --p: #007bff; --bg: #ffffff; --card-bg: #f8f9fa; --txt: #000000; }
         * { box-sizing: border-box; font-family: 'Kanit', sans-serif; color: var(--txt); }
         body { background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        
         header { position: absolute; top: 0; width: 100%; height: 65px; background: #ffffff; border-bottom: 3px solid var(--p); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; z-index: 10; }
-        
         .workspace { display: flex; width: 100%; margin-top: 65px; height: calc(100vh - 65px); }
         .quiz-area { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
-        
         .card { background: var(--card-bg); width: 100%; max-width: 850px; padding: 35px; border-radius: 20px; border: 1px solid #dee2e6; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .q-img { width: 100%; max-height: 280px; object-fit: contain; margin-bottom: 20px; background: #fff; border: 1px solid #ddd; border-radius: 10px; }
-
         .option-btn { display: block; width: 100%; padding: 18px; margin: 12px 0; border: 1px solid #ced4da; border-radius: 10px; background: #fff; text-align: left; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
         .option-btn:hover { background: #f1f1f1; }
         .option-btn.selected { background: var(--p); color: #fff !important; border-color: var(--p); }
         .option-btn.selected b { color: #fff !important; }
-
         .scratch-panel { width: 0; background: #fff; transition: 0.3s; display: flex; flex-direction: column; border-left: 3px solid var(--p); }
         .scratch-panel.open { width: 450px; }
         canvas { flex: 1; background: #fdfdfd; cursor: crosshair; touch-action: none; }
-        
         .btn { padding: 12px 24px; border: 2px solid var(--p); border-radius: 8px; font-weight: 600; cursor: pointer; background: #fff; transition: 0.2s; }
         .btn-p { background: var(--p); color: #fff !important; }
-        
         .review-box { margin-top: 25px; padding: 20px; border-radius: 12px; background: #fff; border-left: 6px solid #ccc; margin-bottom: 15px; }
         .correct-style { border-left-color: #28a745; background: #f0fff4; }
         .wrong-style { border-left-color: #dc3545; background: #fff5f5; }
@@ -98,12 +91,12 @@
         { en: "17. What geometric transformation is applied?", th: "17. การแปลงทางเรขาคณิตในรูปคือข้อใด?", img: "17.jpg", opt: ["Rotation", "Translation", "Dilation", "Reflection"], optTh: ["การหมุน", "การเลื่อนขนาน", "การย่อขยาย", "การสะท้อน"], ans: 1 },
         { en: "18. What geometric transformation is applied?", th: "18. การแปลงทางเรขาคณิตในรูปคือข้อใด?", img: "18.jpg", opt: ["Rotation", "Dilation", "Translation", "Reflection"], optTh: ["การหมุน", "การย่อขยาย", "การเลื่อนขนาน", "การสะท้อน"], ans: 3 },
         { en: "19. What is the rule of the given translation?", th: "19. กฎของการเลื่อนขนานในรูปนี้คือข้อใด?", img: "19.jpg", opt: ["1-unit right", "2 units up, 1 unit down", "1-unit right, 1 unit down", "2 units up"], optTh: ["ขวา 1 หน่วย", "ขึ้น 2 ลง 1", "ขวา 1 หน่วย ลง 1 หน่วย", "ขึ้น 2 หน่วย"], ans: 0 },
-        { en: "20. Factor by GCF: 2x2y3+14xy2-18x3y", th: "20. แยกตัวประกอบโดยใช้ ห.ร.ม. (GCF)", opt: ["A", "B", "C", "2xy(xy2+7y-9x2)"], optTh: ["A", "B", "C", "2xy(xy2+7y-9x2)"], ans: 3 },
-        { en: "21. Factor the polynomial: m2+m-90", th: "21. แยกตัวประกอบพหุนาม: m² + m – 90", opt: ["A", "B", "C", "(m+10)(m-9)"], optTh: ["A", "B", "C", "(m+10)(m-9)"], ans: 3 },
-        { en: "22. What are the factors of 5n2+12n+20?", th: "22. ตัวประกอบของ 5n2+12n+20 คือข้อใด?", opt: ["(5n+2)(n+2)", "B", "C", "D"], optTh: ["(5n+2)(n+2)", "B", "C", "D"], ans: 0 },
-        { en: "23. What are the factors of 2p3+5p2+6p+15 by grouping?", th: "23. แยกตัวประกอบแบบจับกลุ่ม", opt: ["A", "(p2+3)(2p+5)", "C", "D"], optTh: ["A", "(p2+3)(2p+5)", "C", "D"], ans: 1 },
-        { en: "24. Factor the perfect square trinomials: 9x2+12xy+4y2", th: "24. แยกตัวประกอบกำลังสองสมบูรณ์", opt: ["A", "B", "(3x+2y)2", "D"], optTh: ["A", "B", "(3x+2y)2", "D"], ans: 2 },
-        { en: "25. Find the factors of the difference of 2 squares: 25a2-121b2", th: "25. แยกตัวประกอบผลต่างกำลังสอง", opt: ["A", "B", "C", "(5a+11b)(5a-11b)"], optTh: ["A", "B", "C", "(5a+11b)(5a-11b)"], ans: 3 }
+        { en: "20. Factor by GCF: 2x²y³ + 14xy² - 18x³y", th: "20. แยกตัวประกอบโดยใช้ ห.ร.ม. (GCF)", opt: ["2xy(xy³ + 7y - 3x²)", "xy(2xy + 14x - 18y)", "xy(2xy² + 7xy - 9x²)", "2xy(xy² + 7y - 9x²)"], optTh: ["2xy(xy³ + 7y - 3x²)", "xy(2xy + 14x - 18y)", "xy(2xy² + 7xy - 9x²)", "2xy(xy² + 7y - 9x²)"], ans: 3 },
+        { en: "21. Factor the polynomial: m² + m – 90", th: "21. แยกตัวประกอบพหุนาม: m² + m – 90", opt: ["(m+10)(m+9)", "(m-10)(m-9)", "(m-10)(m+9)", "(m+10)(m-9)"], optTh: ["(m+10)(m+9)", "(m-10)(m-9)", "(m-10)(m+9)", "(m+10)(m-9)"], ans: 3 },
+        { en: "22. What are the factors of 5n² + 12n + 4?", th: "22. ตัวประกอบของ 5n² + 12n + 4 คือข้อใด?", opt: ["(5n+2)(n+2)", "(n+4)(5n+1)", "(n+1)(5n+4)", "(5n-1)(n-4)"], optTh: ["(5n+2)(n+2)", "(n+4)(5n+1)", "(n+1)(5n+4)", "(5n-1)(n-4)"], ans: 0 },
+        { en: "23. What are the factors of 2p³ + 5p² + 6p + 15 by grouping?", th: "23. แยกตัวประกอบแบบจับกลุ่ม", opt: ["(p²+5)(2p+3)", "(p²+3)(2p+5)", "(2p+1)(5p²+4)", "(5p²-1)(p-3)"], optTh: ["(p²+5)(2p+3)", "(p²+3)(2p+5)", "(2p+1)(5p²+4)", "(5p²-1)(p-3)"], ans: 1 },
+        { en: "24. Factor the perfect square trinomials: 9x² + 12xy + 4y²", th: "24. แยกตัวประกอบกำลังสองสมบูรณ์", opt: ["(3x-2y)²", "(3x+2)²", "(3x+2y)²", "(3+2y)²"], optTh: ["(3x-2y)²", "(3x+2)²", "(3x+2y)²", "(3+2y)²"], ans: 2 },
+        { en: "25. Find the factors of the difference of 2 squares: 25a² – 121b²", th: "25. แยกตัวประกอบผลต่างกำลังสอง", opt: ["(5a-11b)²", "(5a-11b)(5a-11b)", "(5a-11)(5a-11)", "(5a+11b)(5a-11b)"], optTh: ["(5a-11b)²", "(5a-11b)(5a-11b)", "(5a-11)(5a-11)", "(5a+11b)(5a-11b)"], ans: 3 }
     ];
 
     let userChoices = new Array(25).fill(null);
